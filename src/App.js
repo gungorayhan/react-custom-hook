@@ -1,7 +1,8 @@
 
-import React,{useState} from "react"
+import React,{useState, useEffect} from "react"
 import './App.css';
 import useInput from "./hooks/useInput";
+import  useLocalStorage  from "./hooks/useLocalStorage";
 
 function App() {
 
@@ -25,15 +26,36 @@ function App() {
 
   //-----------------3-----------------------------
 
+  // const localStorageInputs = localStorage.getItem("inputs")
+
+//   const INITIAL_STATE ={
+//     name:"",
+//     age:"",
+//     email:""
+//   }
   
-  const [inputs,setInputs] = useInput({
+//   const [inputs,setInputs] = useInput(JSON.parse(localStorageInputs) || INITIAL_STATE);
+
+//  useEffect(()=>{
+// localStorage.setItem('inputs',JSON.stringify(inputs))
+//  },[inputs])
+//  console.log(inputs)
+
+//------------------------------4---------------------------
+  const INITIAL_STATE ={
     name:"",
     age:"",
     email:""
-  });
+  }
 
-  console.log(inputs)
- 
+  const [storage,setStorage] = useLocalStorage("inputs", INITIAL_STATE);
+
+  const [inputs,setInputs] = useInput(storage);
+
+  useEffect(()=>{
+    setStorage(inputs);
+  },[inputs])
+
 return (
 <div className="App">
   <div className="form">
